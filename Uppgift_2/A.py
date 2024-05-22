@@ -6,12 +6,11 @@ def sigmoid(x):
 
 class Neuron:
     def __init__(self, num_inputs):
-        self.weights = np.random.normal(0, 0.01, num_inputs)
-        self.bias = np.random.normal(0, 0.01)
+        self.weights = np.random.normal(0, 1.0, num_inputs)
+        self.bias = np.random.normal()
 
     def forward(self, inputs):
-        z = np.dot(self.weights, inputs) + self.bias
-        return sigmoid(z)
+        return sigmoid(np.dot(self.weights, inputs) + self.bias)
 
 class Layer:
     def __init__(self, num_neurons, num_inputs):
@@ -22,23 +21,12 @@ class Layer:
 
 class NeuralNetwork:
     def __init__(self, architecture):
-        # Original architecture parsing could have been preserved, 
-        # this change makes it a bit more readable when creating each layer.
-        self.layers = []
-        previous_neurons = 0
-        for neurons, inputs in architecture:
-            if previous_neurons:
-                inputs = previous_neurons
-            layer = Layer(neurons, inputs)
-            self.layers.append(layer)
-            previous_neurons = neurons
+        self.layers = [Layer(neurons, (architecture[i-1][0] if i > 0 else inputs)) 
+                       for i, (neurons, inputs) in enumerate(architecture)]
 
     def predict(self, inputs):
-        for layer in self.layers:
-            inputs = layer.forward(inputs)
-        return inputs
+        return np.array([np.clip(layer.forward(inputs), -1, 1) for layer in self.layers])[-1]
 
-# Example of creating a network and making a prediction
 if __name__ == "__main__":
     architecture = [(20, 3), (10, 20), (1, 10)]
     network = NeuralNetwork(architecture)
