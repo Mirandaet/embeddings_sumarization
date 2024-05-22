@@ -10,7 +10,7 @@ class Neuron:
         self.bias = np.random.normal(0, 0.01)
 
     def forward(self, inputs):
-        z = np.dot(inputs, self.weights) + self.bias
+        z = np.dot(self.weights, inputs) + self.bias
         return sigmoid(z)
 
 class Layer:
@@ -22,7 +22,16 @@ class Layer:
 
 class NeuralNetwork:
     def __init__(self, architecture):
-        self.layers = [Layer(neurons, inputs) for neurons, inputs in architecture]
+        # Original architecture parsing could have been preserved, 
+        # this change makes it a bit more readable when creating each layer.
+        self.layers = []
+        previous_neurons = 0
+        for neurons, inputs in architecture:
+            if previous_neurons:
+                inputs = previous_neurons
+            layer = Layer(neurons, inputs)
+            self.layers.append(layer)
+            previous_neurons = neurons
 
     def predict(self, inputs):
         for layer in self.layers:
