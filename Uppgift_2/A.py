@@ -1,4 +1,3 @@
-```python
 import numpy as np
 
 def sigmoid(x):
@@ -6,8 +5,8 @@ def sigmoid(x):
 
 class Neuron:
     def __init__(self, num_inputs):
-        self.weights = np.random.normal(0, 1.0, num_inputs)
-        self.bias = np.random.normal()
+        self.weights = np.random.randn(num_inputs)
+        self.bias = np.random.randn()
 
     def forward(self, inputs):
         return sigmoid(np.dot(self.weights, inputs) + self.bias)
@@ -21,11 +20,12 @@ class Layer:
 
 class NeuralNetwork:
     def __init__(self, architecture):
-        self.layers = [Layer(neurons, (architecture[i-1][0] if i > 0 else inputs)) 
-                       for i, (neurons, inputs) in enumerate(architecture)]
+        self.layers = [Layer(neurons, input_size) for neurons, input_size in architecture]
 
     def predict(self, inputs):
-        return np.array([np.clip(layer.forward(inputs), -1, 1) for layer in self.layers])[-1]
+        for layer in self.layers:
+            inputs = layer.forward(inputs)
+        return inputs
 
 if __name__ == "__main__":
     architecture = [(20, 3), (10, 20), (1, 10)]
@@ -33,4 +33,3 @@ if __name__ == "__main__":
     input_data = np.array([0.5, -0.2, 0.1])
     prediction = network.predict(input_data)
     print(prediction)
-```
