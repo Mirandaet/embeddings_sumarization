@@ -1,6 +1,6 @@
 import sys
 import json
-from interface import query_vdb, get_summary
+from interface import query_vdb, get_summary, modify
 
 def main():
     if len(sys.argv) < 3:
@@ -30,6 +30,8 @@ def main():
         else:
             print (result)
           # assuming the file path is the first argument
+    elif command == 'modify':
+        result = modify(arguments[0], arguments[1])
     else:
         result = "Unknown command"
         print(result)

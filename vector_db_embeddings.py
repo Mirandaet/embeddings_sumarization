@@ -264,8 +264,8 @@ def query_gpt4(user_input):
 
 if "__name__" == "__main__":
     # Example use case: Inserting and querying code embeddings
-    embeddings_file = 'uppgift2_embeddings_openAI.pkl'
-    code_directory = './codebase/Uppgift_2'  # path to the pandas directory'
+    embeddings_file = './Uppgift2_embeddings_openAI.pkl'
+    code_directory = './Uppgift_2'  # path to the pandas directory'
     # embeddings = load_embeddings(embeddings_file)
     code_snippets = extract_code_snippets(code_directory)
     collection = create_collection(3072)

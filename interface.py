@@ -1,8 +1,9 @@
 import vector_db_embeddings as vbd
 import os
 from summarization import CodeSummarizer
+import changes as c
 
-def query_vdb(user_query, code_directory="../codebase/Uppgift_2", create_new_embeddings=False):
+def query_vdb(user_query, code_directory="./Uppgift_2", create_new_embeddings=False):
     # embeddings = load_embeddings(embeddings_file)
     
     embeddings_file = code_directory + "_embeddings.pkl"
@@ -14,7 +15,7 @@ def query_vdb(user_query, code_directory="../codebase/Uppgift_2", create_new_emb
         except FileNotFoundError:
             print(f"File '{embeddings_file}' not found.")
         except PermissionError:
-            print(f"Permission denied: Unable to delete '{embeddings_file}'.")
+            print(f"Permission denied: Unable to delete'{embeddings_file}'.")
         except Exception as e:
             print(f"Error occurred while trying to delete '{embeddings_file}': {e}")
 
@@ -73,4 +74,7 @@ def get_summary(path):
         raise ValueError("Provided path must be a directory or a Python file.")
 
 
+def modify(file_path, description):
 
+    changed_code = c.suggest_code_change(file_path, description)
+    c.review_changes(file_path, changed_code)

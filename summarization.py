@@ -53,6 +53,6 @@ if "__name__" == "__main__":
     api_key = os.environ['OPENAI_API_KEY']
     model = 'gpt-4-instruct'  # Or any other suitable model
     summarizer = CodeSummarizer(model, api_key)
-    directory_path = './codebase/Uppgift_2'
+    directory_path = './Uppgift_2'
     summaries = summarizer.process_directory(directory_path)
     summarizer.save_summaries(summaries)
